@@ -91,19 +91,8 @@ public class ShoppingCart {
         List<String[]> lines = new ArrayList<String[]>();
         String[] header = {"#","Item","Price","Quan.","Discount","Total"};
         int[] align = new int[] { 1, -1, 1, 1, 1, 1 };
-        // formatting each line
-        int index = 0;
-        for (Item item : items) {
-            lines.add(new String[]{
-                    String.valueOf(++index),
-                    item.getTitle(),
-                    MONEY.format(item.getPrice()),
-                    String.valueOf(item.getQuantity()),
-                    (item.getDiscount() == 0) ? "-" : (item.getDiscount() + "%"),
-                    MONEY.format(item.getTotal())
-            });
-        }
-        String[] footer = { String.valueOf(index),"","","","", MONEY.format(total) };
+        List<String[]> lines = convertItemsToTableLines();
+        String[] footer = { String.valueOf(items.size()),"","","","", MONEY.format(total) };
         // formatting table
         // column max length
         int[] width = new int[]{0,0,0,0,0,0};
@@ -143,6 +132,23 @@ public class ShoppingCart {
     }
         return total;
     }
+
+    rivate List<String[]> convertItemsToTableLines() {
+        List<String[]> lines = new ArrayList<>();
+        int index = 0;
+        for (Item item : items) {
+            lines.add(new String[]{
+                    String.valueOf(++index),
+                    item.getTitle(),
+                    MONEY.format(item.getPrice()),
+                    String.valueOf(item.getQuantity()),
+                    (item.getDiscount() == 0) ? "-" : (item.getDiscount() + "%"),
+                    MONEY.format(item.getTotal())
+            });
+        }
+        return lines;
+    }
+
     // --- private section -----------------------------------------------------
     private static final NumberFormat MONEY;
     static {
